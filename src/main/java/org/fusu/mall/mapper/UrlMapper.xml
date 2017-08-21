@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fusu.mall.mapper.UrlMapper">
+	<select id="queryUrlByUrl" resultType="url">
+		select urlid,url,status
+		from urlbean t where t.url = #{url} LIMIT 1
+	</select>
+	<insert id="insertUrl" parameterType="url">
+		INSERT INTO urlbean
+		(url,status,update_time)
+		VALUES (#{url},#{status},#{update_time})
+	</insert>
+	<update id="updateStatusByUrl" parameterType="url">
+		update urlbean set
+		status=#{status},update_time=#{update_time}
+		where url=#{url}
+	</update>
+	<select id="queryListByStatus" resultType="url">
+		select
+		urlid,url,status
+		from urlbean t where t.status = 0 LIMIT 100
+	</select>
+</mapper>
