@@ -19,19 +19,19 @@ import org.fusu.mall.util.TimeUtil;
  */
 public class App {
 	public static void main(String[] args) {
-		String url = "https://shouji.jd.com";
+		String url = "https://list.jd.com/list.html?cat=670%2C671%2C672&go=0";
 		go(url);
-		System.out.println("-----------抓取完成------------");
 	}
 
 	public static void go(String url) {
 		getList(url);
+		System.out.println("-----------抓取完成------------");
 		do {
 			List<UrlBean> urlList = UrlBiz.queryListByStatus();
 			for (int i = 0; i < urlList.size(); i++) {
 				getList(urlList.get(i).getUrl());
 				try {
-					Thread.sleep(RandomUtils.nextInt(100, 800));
+					Thread.sleep(RandomUtils.nextInt(800, 2000));
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -44,7 +44,7 @@ public class App {
 		String body;
 		try {
 			body = HttpUtil.getBody(url);
-			List<String> aList = JsoupUtil.getALink(body, "item.jd.com");
+			List<String> aList = JsoupUtil.getALink(body, "jd.com");
 			// 封装需要存储的数据
 			ItemBean itemBean = JsoupUtil.getItemBean(body, url);
 			ItemBean itemBean2 = ItemBiz.queryItemByTitle(itemBean.getTitle());
@@ -59,7 +59,11 @@ public class App {
 				String nowUrl = StringUtils.trim(aList.get(i));
 				UrlBean urlBean = UrlBiz.queryUrlByUrl(nowUrl);
 				if (urlBean == null) {
+					if (nowUrl.length()> 250) {
+						break;
+					}
 					UrlBean urlBean2 = new UrlBean();
+					System.out.println("需要插入URL地址："+nowUrl);
 					urlBean2.setUrl(nowUrl);
 					urlBean2.setStatus(0);
 					urlBean2.setUpdate_time(TimeUtil.getUnix());

@@ -1,5 +1,6 @@
 package org.fusu.mall.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -61,7 +62,7 @@ public class JsoupUtil {
 					list.add(href);
 				}
 			} else {
-				System.err.println("抓取的URL不符合要求");
+				// System.err.println("抓取的URL不符合要求");
 				continue;
 			}
 		}
@@ -98,9 +99,9 @@ public class JsoupUtil {
 			String name = meta.attr("name");
 			// 将name中大写转化为小写
 			name = StringUtils.lowerCase(name);
-			if (StringUtils.equals(name, "keywords") && !StringUtils.isBlank(meta.attr("content"))) {
+			if (StringUtils.equals(name, "keywords")) {
 				itemBean.setKeywords(meta.attr("content"));
-			} else if (StringUtils.equals(name, "description") && !StringUtils.isBlank(meta.attr("content"))) {
+			} else if (StringUtils.equals(name, "description")) {
 				itemBean.setDescription(meta.attr("content"));
 			}
 		}

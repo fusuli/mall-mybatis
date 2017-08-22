@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class JsoupUtilTest {
 
+	
 	@Test
 	public void testGetALink() {
 		String body = "<html><body><a href=\"//11111list.jd.com/list.html\">移动电源</a>"
