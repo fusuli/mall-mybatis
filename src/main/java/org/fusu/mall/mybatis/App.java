@@ -47,14 +47,15 @@ public class App {
 			List<String> aList = JsoupUtil.getALink(body, "jd.com");
 			// 封装需要存储的数据
 			ItemBean itemBean = JsoupUtil.getItemBean(body, url);
-			ItemBean itemBean2 = ItemBiz.queryItemByTitle(itemBean.getTitle());
-			if (itemBean2 == null) {
-				int rs = ItemBiz.insertItem(itemBean);
-				System.out.println(itemBean.getTitle() + " 插入结果： " + rs);
-			} else {
-				System.err.println("item已存在!!!");
+			if(itemBean.getTitle().length()<600) {
+				ItemBean itemBean2 = ItemBiz.queryItemByTitle(itemBean.getTitle());
+				if (itemBean2 == null) {
+					int rs = ItemBiz.insertItem(itemBean);
+					System.out.println(itemBean.getTitle() + " 插入结果： " + rs);
+				} else {
+					System.err.println("item已存在!!!");
+				}
 			}
-
 			for (int i = 0; i < aList.size(); i++) {
 				String nowUrl = StringUtils.trim(aList.get(i));
 				UrlBean urlBean = UrlBiz.queryUrlByUrl(nowUrl);
@@ -68,7 +69,7 @@ public class App {
 					urlBean2.setStatus(0);
 					urlBean2.setUpdate_time(TimeUtil.getUnix());
 					int rs = UrlBiz.insertUrl(urlBean2);
-					System.out.println(nowUrl + " 插入结果： " + rs);
+					System.out.println("正在插入URL地址："+nowUrl + " 插入结果： " + rs);
 				} else {
 					System.err.println("URL已存在!!!");
 					continue;
