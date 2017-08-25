@@ -99,9 +99,19 @@ public class JsoupUtil {
 			// 将name中大写转化为小写
 			name = StringUtils.lowerCase(name);
 			if (StringUtils.equals(name, "keywords")) {
-				itemBean.setKeywords(meta.attr("content"));
+				if (meta.attr("content").length() >= 400) {
+					String keywords = meta.attr("content").substring(0, 400);
+					itemBean.setKeywords(keywords);
+				}else if(meta.attr("content").length() < 400) {
+					itemBean.setKeywords(meta.attr("content"));
+				}
 			} else if (StringUtils.equals(name, "description")) {
-				itemBean.setDescription(meta.attr("content"));
+				if(meta.attr("content").length() >= 800) {
+					String description = meta.attr("content").substring(0, 800);
+					itemBean.setDescription(description);
+				}else if(meta.attr("content").length() < 800) {
+					itemBean.setDescription(meta.attr("content"));
+				}		
 			}
 		}
 		return itemBean;
