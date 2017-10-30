@@ -35,7 +35,11 @@ public class JsoupUtil {
 	 * @return
 	 */
 	public static String getTitle(String html) {
-		return getDoc(html).title().trim();
+		if (getDoc(html).title().length() > 600) {
+			return getDoc(html).title().trim().substring(0, 600);
+		} else {
+			return getDoc(html).title().trim();
+		}
 	}
 
 	/**
@@ -91,7 +95,11 @@ public class JsoupUtil {
 	public static ItemBean getItemBean(String html, String url) {
 		Document document = getDoc(html);
 		ItemBean itemBean = new ItemBean();
-		itemBean.setTitle(document.title());
+		if(document.title().length()<=600) {
+			itemBean.setTitle(document.title());
+		}else if (document.title().length()>600) {
+			itemBean.setTitle(document.title().substring(0,600));
+		}
 		itemBean.setUrl(url);
 		Elements metas = document.select("meta");
 		for (Element meta : metas) {
@@ -102,16 +110,16 @@ public class JsoupUtil {
 				if (meta.attr("content").length() >= 400) {
 					String keywords = meta.attr("content").substring(0, 400);
 					itemBean.setKeywords(keywords);
-				}else if(meta.attr("content").length() < 400) {
+				} else if (meta.attr("content").length() < 400) {
 					itemBean.setKeywords(meta.attr("content"));
 				}
 			} else if (StringUtils.equals(name, "description")) {
-				if(meta.attr("content").length() >= 800) {
+				if (meta.attr("content").length() >= 800) {
 					String description = meta.attr("content").substring(0, 800);
 					itemBean.setDescription(description);
-				}else if(meta.attr("content").length() < 800) {
+				} else if (meta.attr("content").length() < 800) {
 					itemBean.setDescription(meta.attr("content"));
-				}		
+				}
 			}
 		}
 		return itemBean;
